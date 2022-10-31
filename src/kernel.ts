@@ -2,20 +2,20 @@ import { KernelMessage } from '@jupyterlab/services';
 
 import { BaseKernel } from '@jupyterlite/kernel';
 import { RbValue, RubyVM } from 'ruby-head-wasm-wasi';
-import { DefaultRubyVM } from "ruby-head-wasm-wasi/dist/browser"
+import { DefaultRubyVM } from 'ruby-head-wasm-wasi/dist/browser';
 
 /**
  * A kernel that interpret Ruby code.
  */
 export class CRubyKernel extends BaseKernel {
   private _vmPromise: Promise<{ vm: RubyVM }> | null = null;
-  async useVM() {
+  async useVM(): Promise<{ vm: RubyVM }> {
     if (this._vmPromise) {
       return this._vmPromise;
     }
     this._vmPromise = (async () => {
       const response = await fetch(
-        "https://cdn.jsdelivr.net/npm/ruby-head-wasm-wasi@0.3.0-2022-10-17-a/dist/ruby+stdlib.wasm"
+        'https://cdn.jsdelivr.net/npm/ruby-head-wasm-wasi@0.3.0-2022-10-17-a/dist/ruby+stdlib.wasm'
       );
       const buffer = await response.arrayBuffer();
       const module = await WebAssembly.compile(buffer);
@@ -67,7 +67,7 @@ export class CRubyKernel extends BaseKernel {
     try {
       const { vm } = await this.useVM();
 
-      const result = vm.eval(code)
+      const result = vm.eval(code);
       this.publishExecuteResult({
         execution_count: this.executionCount,
         data: {
@@ -86,7 +86,7 @@ export class CRubyKernel extends BaseKernel {
       this.publishExecuteError({
         ename: name,
         evalue: message,
-        traceback: [`${stack}`],
+        traceback: [`${stack}`]
       });
 
       return {
@@ -94,7 +94,7 @@ export class CRubyKernel extends BaseKernel {
         execution_count: this.executionCount,
         ename: name,
         evalue: message,
-        traceback: [`${stack}`],
+        traceback: [`${stack}`]
       };
     }
   }
@@ -112,27 +112,27 @@ export class CRubyKernel extends BaseKernel {
       require "irb/completion"
       main_bind = binding
       ->(input) { IRB::InputCompletor.retrieve_completion_data(input.to_s, bind: main_bind) }
-    `)
+    `);
     const { code, cursor_pos } = content;
-    const lines = code.slice(0, cursor_pos).split("\n");
+    const lines = code.slice(0, cursor_pos).split('\n');
     const line = lines[lines.length - 1];
     const rbArrayToArray = (vm: RubyVM, value: RbValue) => {
-      const length = value.call("length").toJS();
+      const length = value.call('length').toJS();
       const items: RbValue[] = [];
       for (let i = 0; i < length; i++) {
-        const element = value.call("at", vm.eval(String(i)));
+        const element = value.call('at', vm.eval(String(i)));
         items.push(element);
       }
       return items;
-    }
-    const items = rbArrayToArray(vm, completor.call("call", vm.wrap(line)))
+    };
+    const items = rbArrayToArray(vm, completor.call('call', vm.wrap(line)));
 
     return {
       matches: items.map(item => item.toString()),
       cursor_start: cursor_pos - line.length,
       cursor_end: cursor_pos,
       metadata: {},
-      status: 'ok',
+      status: 'ok'
     };
   }
 
