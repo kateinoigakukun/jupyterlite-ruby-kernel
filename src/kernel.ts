@@ -8,8 +8,8 @@ import { DefaultRubyVM } from 'ruby-head-wasm-wasi/dist/browser';
  * A kernel that interpret Ruby code.
  */
 export class CRubyKernel extends BaseKernel {
-  private _vmPromise: Promise<{ vm: RubyVM }> | null = null;
-  async useVM(): Promise<{ vm: RubyVM }> {
+  private _vmPromise: Promise<{ vm: RubyVM; mainBind: RbValue }> | null = null;
+  async useVM(): Promise<{ vm: RubyVM; mainBind: RbValue }> {
     if (this._vmPromise) {
       return this._vmPromise;
     }
@@ -19,7 +19,8 @@ export class CRubyKernel extends BaseKernel {
       );
       const buffer = await response.arrayBuffer();
       const module = await WebAssembly.compile(buffer);
-      return await DefaultRubyVM(module);
+      const { vm } = await DefaultRubyVM(module);
+      return { vm, mainBind: vm.eval('binding') };
     })();
     return this._vmPromise;
   }
@@ -65,9 +66,9 @@ export class CRubyKernel extends BaseKernel {
   ): Promise<KernelMessage.IExecuteReplyMsg['content']> {
     const { code } = content;
     try {
-      const { vm } = await this.useVM();
+      const { vm, mainBind } = await this.useVM();
 
-      const result = vm.eval(code);
+      const result = mainBind.call('eval', vm.wrap(code).call('to_s'));
       this.publishExecuteResult({
         execution_count: this.executionCount,
         data: {
@@ -107,11 +108,10 @@ export class CRubyKernel extends BaseKernel {
   async completeRequest(
     content: KernelMessage.ICompleteRequestMsg['content']
   ): Promise<KernelMessage.ICompleteReplyMsg['content']> {
-    const { vm } = await this.useVM();
+    const { vm, mainBind } = await this.useVM();
     const completor = vm.eval(`
       require "irb/completion"
-      main_bind = binding
-      ->(input) { IRB::InputCompletor.retrieve_completion_data(input.to_s, bind: main_bind) }
+      ->(input, bind) { IRB::InputCompletor.retrieve_completion_data(input.to_s, bind: bind) }
     `);
     const { code, cursor_pos } = content;
     const lines = code.slice(0, cursor_pos).split('\n');
@@ -125,7 +125,10 @@ export class CRubyKernel extends BaseKernel {
       }
       return items;
     };
-    const items = rbArrayToArray(vm, completor.call('call', vm.wrap(line)));
+    const items = rbArrayToArray(
+      vm,
+      completor.call('call', vm.wrap(line), mainBind)
+    );
 
     return {
       matches: items.map(item => item.toString()),
