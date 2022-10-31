@@ -10,6 +10,9 @@ import { IKernel, IKernelSpecs } from '@jupyterlite/kernel';
 
 import { CRubyKernel } from './kernel';
 
+import logo32 from '../style/logos/ruby-logo-32x32.png';
+import logo64 from '../style/logos/ruby-logo-64x64.png';
+
 /**
  * A plugin to register the Ruby kernel.
  */
@@ -25,8 +28,8 @@ const kernel: JupyterLiteServerPlugin<void> = {
         language: 'ruby',
         argv: [],
         resources: {
-          'logo-32x32': '',
-          'logo-64x64': ''
+          'logo-32x32': logo32,
+          'logo-64x64': logo64
         }
       },
       create: async (options: IKernel.IOptions): Promise<IKernel> => {

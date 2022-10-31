@@ -47,7 +47,7 @@ export class CRubyKernel extends BaseKernel {
       banner: 'A Ruby kernel running in the browser',
       help_links: [
         {
-          text: 'Ruby Kernel',
+          text: 'About Ruby Kernel',
           url: 'https://github.com'
         }
       ]
