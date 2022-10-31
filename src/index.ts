@@ -8,10 +8,10 @@ import {
 
 import { IKernel, IKernelSpecs } from '@jupyterlite/kernel';
 
-import { EchoKernel } from './kernel';
+import { CRubyKernel } from './kernel';
 
 /**
- * A plugin to register the echo kernel.
+ * A plugin to register the Ruby kernel.
  */
 const kernel: JupyterLiteServerPlugin<void> = {
   id: '@jupyterlite/ruby-kernel:kernel',
@@ -30,7 +30,7 @@ const kernel: JupyterLiteServerPlugin<void> = {
         }
       },
       create: async (options: IKernel.IOptions): Promise<IKernel> => {
-        return new EchoKernel(options);
+        return new CRubyKernel(options);
       }
     });
   }

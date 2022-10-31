@@ -5,9 +5,9 @@ import { RbValue, RubyVM } from 'ruby-head-wasm-wasi';
 import { DefaultRubyVM } from "ruby-head-wasm-wasi/dist/browser"
 
 /**
- * A kernel that echos content back.
+ * A kernel that interpret Ruby code.
  */
-export class EchoKernel extends BaseKernel {
+export class CRubyKernel extends BaseKernel {
   private _vmPromise: Promise<{ vm: RubyVM }> | null = null;
   async useVM() {
     if (this._vmPromise) {
