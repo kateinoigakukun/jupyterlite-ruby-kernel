@@ -5,6 +5,7 @@ include package.json
 include install.json
 include ts*.json
 include yarn.lock
+include examples/*.ipynb
 
 graft jupyterlite_ruby_kernel/labextension
 
