@@ -30,7 +30,7 @@ jobs:
         # TODO: add JupyterLite browser check
         # python -m jupyterlab.browser_check
 
-        jupyter lite build --output-dir dist
+        jupyter lite build --output-dir dist --contents examples
 
         check-manifest -v
 
