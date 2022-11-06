@@ -1,7 +1,7 @@
 {
   "name": "jupyterlite-ruby-kernel",
   "version": "0.1.0",
-  "description": "A JupyterLite server extension.",
+  "description": "JupyterLite Ruby Kernel Extension",
   "keywords": [
     "jupyter",
     "jupyterlab",

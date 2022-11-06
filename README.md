@@ -2,7 +2,11 @@
 
 [![Github Actions Status](https://github.com/github_username/jupyterlite-ruby-kernel/workflows/Build/badge.svg)](https://github.com/github_username/jupyterlite-ruby-kernel/actions/workflows/build.yml)
 
-A JupyterLite server extension.
+JupyterLite Ruby Kernel Extension
+
+## Try it in your browser
+
+https://kateinoigakukun.github.io/jupyterlite-ruby-kernel/lab/index.html
 
 ## Requirements
 
