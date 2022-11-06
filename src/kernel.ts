@@ -38,7 +38,7 @@ export class CRubyKernel extends BaseKernel {
       const originalWriteSync = wasmFs.fs.writeSync.bind(wasmFs.fs);
       const stdOutErrBuffers: { [key: number]: string } = { 1: '', 2: '' };
       const self = this;
-      wasmFs.fs.writeSync = function (...args) {
+      wasmFs.fs.writeSync = function (...args: any[]) {
         const fd: number = args[0];
         let text;
         if (args.length === 4) {
