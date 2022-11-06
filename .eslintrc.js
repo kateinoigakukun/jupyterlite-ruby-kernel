@@ -26,6 +26,8 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': ['warn', { args: 'none' }],
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-namespace': 'off',
+    '@typescript-eslint/ban-ts-comment': 'off',
+    '@typescript-eslint/no-this-alias': 'off',
     '@typescript-eslint/no-use-before-define': 'off',
     '@typescript-eslint/quotes': [
       'error',
