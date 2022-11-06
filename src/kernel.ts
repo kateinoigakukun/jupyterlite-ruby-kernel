@@ -130,8 +130,10 @@ export class CRubyKernel extends BaseKernel {
       wasi.setMemory(instance.exports.memory as WebAssembly.Memory);
       (instance.exports._initialize as any)();
       vm.initialize(args);
-      const setJupyterKernel = vm.eval(`-> (kernel) { $JUPYTER_KERNEL = kernel }`);
-      setJupyterKernel.call("call", vm.wrap(this));
+      const setJupyterKernel = vm.eval(
+        '-> (kernel) { $JUPYTER_KERNEL = kernel }'
+      );
+      setJupyterKernel.call('call', vm.wrap(this));
       return { vm, mainBind: vm.eval('binding') };
     })();
     return this._vmPromise;
