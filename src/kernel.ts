@@ -121,7 +121,7 @@ export class CRubyKernel extends BaseKernel {
       };
       vm.addToImports(imports);
       const response = await fetch(
-        'https://cdn.jsdelivr.net/npm/ruby-head-wasm-wasi@0.4.0-2022-11-05-b/dist/ruby+stdlib.wasm'
+        'https://cdn.jsdelivr.net/npm/ruby-head-wasm-wasi@0.4.0-2022-11-06-b/dist/ruby+stdlib.wasm'
       );
       const buffer = await response.arrayBuffer();
       const { instance } = await WebAssembly.instantiate(buffer, imports);
