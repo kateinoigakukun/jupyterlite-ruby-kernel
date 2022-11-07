@@ -243,7 +243,7 @@ export class CRubyKernel extends BaseKernel {
   ): Promise<KernelMessage.ICompleteReplyMsg['content']> {
     const { vm, mainBind } = await this.useVM();
     const completor = vm.eval(`
-      require "irb/completion"
+      Kernel.require "irb/completion"
       ->(input, bind) { IRB::InputCompletor.retrieve_completion_data(input.to_s, bind: bind) }
     `);
     const { code, cursor_pos } = content;
