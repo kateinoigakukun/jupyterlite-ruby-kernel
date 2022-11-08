@@ -30,6 +30,8 @@ jobs:
         # TODO: add JupyterLite browser check
         # python -m jupyterlab.browser_check
 
+        # Install some extensions for demo
+        jupyter labextension install plotlywidget
         jupyter lite build --output-dir dist --contents examples
 
         check-manifest -v
